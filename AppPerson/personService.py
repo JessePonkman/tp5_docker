@@ -25,7 +25,7 @@ class PersonService():
         Repository.person[lastKey] = person.__dict__
         print("\n%s ha sido añadido!" % person.name)
 
-    def update_person(self, key=None, opc=None):
+    def update_person(self, key=None, opc=None, modify=None):
         print("\n--------Modificar Persona--------")
         if key is None:
             key = int(input("\nIngrese el codigo de la persona: "))
@@ -36,7 +36,8 @@ class PersonService():
         print("3. Edad")
         if opc is None:
             opc = int(input("\nIngrese el atributo que desea modificar: "))
-        modify = input("\nIngrese el nuevo valor: ")
+        if modify is None:
+            modify = input("\nIngrese el nuevo valor: ")
         if opc == 1:
             person['_name'] = modify.upper()
         if opc == 2:
@@ -45,12 +46,15 @@ class PersonService():
             person['_age'] = int(modify)
         print("\nModificacion exitosa!\n%s" % person)
 
-    def delete_person(self, key=None):
+    def delete_person(self, key=None, ask=True):
         print("\n--------Eliminar Persona--------")
         if key is None:
             key = int(input("\nIngrese el codigo de la persona: "))
-        opc = input("\nSeguro quiere borrar a %s del diccionario? Y/N\n"
-                    % Repository.person[key]['_name'])
-        if opc.upper() == "Y":
+        if ask:
+            opc = input("\nSeguro quiere borrar a %s del diccionario? Y/N\n"
+                        % Repository.person[key]['_name'])
+            if opc.upper() == "Y":
+                del Repository.person[key]
+                print("\nSe elimino del diccionario correctamente!\n")
+        if not ask:
             del Repository.person[key]
-            print("\nSe elimino del diccionario correctamente!\n")
